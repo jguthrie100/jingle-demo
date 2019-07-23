@@ -8,12 +8,11 @@
 
 # Role Management Implementation
 
-I would create a repository containing containing different User roles, with either a one-to-many relationship with Users,
+I would create a repository containing containing different Roles, with either a one-to-many relationship with Users,
  or a many-to-many relationship (using a _middleman_, join table). One User could then have many roles.
-Each Role class could also contain a list of methods which the User is permitted to do.
+Each Role class could contain a list of methods which the User is permitted to do.
  
-Roles would then inherit from each other, so a ```Guest``` role would have a certain subset of permitted operations. ```Member``` could then inherit 
-from ```Guest``` and implement a further set of methods. ```Admin``` could then inherit from ```Member``` and so on.
+Roles could then inherit from each other, so a ```Guest``` role would have a certain subset of permitted operations. ```Member``` could then inherit all the methods from ```Guest``` and implement a further set of methods. ```Admin``` could then inherit all the methods from from ```Member``` and so on.
 
 Before running any operations, a check would be made to see what roles the user has/belongs to, and whether the current operation is available to them.
 This could be as simple as saving a list of permitted operations in a repository/class and checking against it every time an operation is made.
