@@ -27,10 +27,10 @@ public class AuthService {
 	/**
 	 * Gets a hash of the given password
 	 */
-	public byte[] getPasswordHash(String password) throws 	NoSuchAlgorithmException,
-	  														InvalidKeySpecException {
+	public byte[] getPasswordHash(String password) throws NoSuchAlgorithmException,	InvalidKeySpecException {
 		
 		byte[] salt = new byte[20];
+		
 		for(int i = 0; i < salt.length; i++) {
 			salt[i] = (byte)password.charAt(password.length()-1-(i%password.length()));
 		}		

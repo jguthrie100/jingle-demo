@@ -23,7 +23,7 @@ public class UserController {
 	/**
 	 * Save a new user to the database
 	 */
-	@RequestMapping(value = "/signup", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ResponseEntity<User> signUp(@RequestParam(value = "username") String username,
 									   @RequestParam(value = "firstname") String firstName,
 									   @RequestParam(value = "lastname") String lastName,
@@ -82,5 +82,14 @@ public class UserController {
 										@RequestParam(value = "username", required = false) String username) {
 		
 		return apiHelper.getUser(userId, username);
+	}
+
+	/**
+	 * Default path
+	 */
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public ResponseEntity<String> displayDefault() {
+		
+		return new ResponseEntity<String>("Please visit http://www.github.com/jguthrie100/jingle-demo for information about this API", HttpStatus.OK);
 	}
 }
