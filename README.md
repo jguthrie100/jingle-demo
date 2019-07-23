@@ -1,10 +1,15 @@
 # jingle-demo
 
-# TODO
+# How to use
+___POST /signup___ - requires 'username', 'firstname, 'lastname', 'email' and 'password' - returns new user.)
 
-* Fix error messages when trying to save duplicate UNIQUE values in repository 
-* Convert to using modules
-* Finish tests
+___POST /login___ - requires 'username' and 'password' - returns authentication key.
+    
+___PUT /edit___ - requires 'userid' and 'authkey', with all other params being optional - returns updated user.
+    
+___DELETE /delete___ - requires 'userid' and 'authkey' - returns whether successful or not
+    
+___GET /user___ - requires either 'userid' or 'username' - returns user
 
 # Role Management Implementation
 
@@ -43,3 +48,10 @@ For example:
      }
   
   This could then be extended further with whole subsets of methods only being available to the relevant Roles.
+
+
+# TODO
+
+* Fix error messages when trying to save duplicate UNIQUE values in repository 
+* Convert to using modules
+* Finish tests
