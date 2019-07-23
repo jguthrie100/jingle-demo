@@ -14,7 +14,7 @@ ___GET /user___ - requires either 'userid' or 'username' - returns user
 # Role Management Implementation
 
 I would create a repository containing containing different Roles, with either a one-to-many relationship with Users,
- or a many-to-many relationship (using a _middleman_, join table). One User could then have many roles.
+ or a many-to-many relationship (using a _middleman_ join table, allowing a user to have many roles.)
 Each Role class could contain a list of methods which the User is permitted to do.
  
 Roles could then inherit from each other, so a ```Guest``` role would have a certain subset of permitted operations. ```Member``` could then inherit all the methods from ```Guest``` and implement a further set of methods. ```Admin``` could then inherit all the methods from from ```Member``` and so on.
