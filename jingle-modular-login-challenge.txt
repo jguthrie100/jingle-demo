@@ -1,0 +1,37 @@
+------------------------
+
+Jingle API Challenge
+
+Please write a small modular Java application consisting of three java modules with the task of creating and editing users and logging in:
+
+#0 Parent project
+The main project holds the configuration for the three modules and packs and runs the application.
+
+#1 Master Data Module
+Module to create, update and delete Users in a classic Controller, Service, Repository way and store them in a database. The database can either be in-memory or PosgreSQL.
+- Signup (no authentication token required)
+- Edit User (authentication token required)
+- Delete User (authentication token required)
+
+#2 Authentication Module
+A user can login via a REST-API with email and password in an OAuth 2.0 manner and receives a token. This token has to be revalidated after some time. 
+
+#3 Shared Data
+All the models and shared data between the other two models should be situated in here. For example: User, Role, ...
+
+
+(optional) Role Management (just design)
+Design and think about a sophisitaced role-management system (no need for implementation). Just describe in words and diagrams how to properly solve this problem.
+
+
+Hints:
+- Stack: Java 8+, Spring Boot, Maven, REST API
+- Security - make sure that state of the art security aspects and GDPR measoures are taken care of.
+- Write the application as if you would roll it out to a potential customer. That means also think about how you secure your code quality and architecture (Tests, Comments, Architecture, etc.)
+- (optional) deploy a testing version on a free hosting platform
+
+
+Also let us know roughly how long it took you to complete the challenge.
+If you have any questions let me know.
+
+------------------------
