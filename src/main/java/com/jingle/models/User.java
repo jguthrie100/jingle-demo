@@ -17,14 +17,12 @@ public class User {
 	private Long id;
 	
 	@Column(unique = true)
-	@NotNull
 	private String username;
 	
 	private String firstName;
 	private String lastName;
 	
 	@Column(unique = true)
-	@NotNull
 	private String emailAddress;
 	
 	private byte[] passwordHash;
@@ -48,7 +46,7 @@ public class User {
 	}
 	
 	public void setUsername(String username) {
-		if(username == null || username.equals("")) {
+		if(username == null || username.isEmpty()) {
 			throw new IllegalArgumentException("Username cannot be blank");
 		}
 		
@@ -76,6 +74,10 @@ public class User {
 	}
 	
 	public void setEmailAddress(String emailAddress) {
+		if(emailAddress == null || emailAddress.isEmpty()) {
+			throw new IllegalArgumentException("Email address cannot be blank");
+		}
+		
 		this.emailAddress = emailAddress;
 	}
 	

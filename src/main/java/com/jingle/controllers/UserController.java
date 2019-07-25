@@ -1,11 +1,18 @@
 package com.jingle.controllers;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
+
+import javax.security.auth.login.FailedLoginException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import com.jingle.exceptions.ExpiredAuthKeyException;
+import com.jingle.exceptions.InvalidAuthKeyException;
 import com.jingle.models.User;
 import com.jingle.services.UserControllerHelper;
 
@@ -20,15 +27,20 @@ public class UserController {
 		this.apiHelper = apiHelper;
 	}
 	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<Map<String, Object>> handleError(HttpServletRequest req, Exception ex) {
+		return apiHelper.exceptionHandler(req, ex);
+	}
+	
 	/**
 	 * Save a new user to the database
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ResponseEntity<User> signUp(@RequestParam(value = "username") String username,
-									   @RequestParam(value = "firstname") String firstName,
-									   @RequestParam(value = "lastname") String lastName,
-									   @RequestParam(value = "email") String emailAddress,
-									   @RequestParam(value = "password") String password) {
+                                       @RequestParam(value = "firstname") String firstName,
+                                       @RequestParam(value = "lastname") String lastName,
+                                       @RequestParam(value = "email") String emailAddress,
+                                       @RequestParam(value = "password") String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		
 		User userData = new User(username, firstName, lastName, emailAddress, password.getBytes());
 		
@@ -38,17 +50,16 @@ public class UserController {
 	/**
 	 * Login and retrieve an authentication key
 	 */
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> login(@RequestParam(value = "username") String username,
-									    @RequestParam(value = "password") String password) {
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> login(@RequestParam(value = "username") String username,
+                                                     @RequestParam(value = "password") String password) throws NoSuchAlgorithmException, InvalidKeySpecException, FailedLoginException {
 		
 		return apiHelper.loginUser(username, password);
 	}
 	
 	/**
 	 * Update a specific User object using the given parameter values.
-	 * All params are optional except for the userid and authkey params
-	 * 
+	 * All params are optional except for the userid and authkey params 
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
 	public ResponseEntity<User> editUser(@RequestParam(value = "userid") long userId,
@@ -57,7 +68,7 @@ public class UserController {
 										 @RequestParam(value = "firstname", required = false) String firstName,
 										 @RequestParam(value = "lastname", required = false) String lastName,
 										 @RequestParam(value = "email", required = false) String emailAddress,
-										 @RequestParam(value = "password", required = false) String password) {
+										 @RequestParam(value = "password", required = false) String password) throws NoSuchAlgorithmException, InvalidKeySpecException, ExpiredAuthKeyException, InvalidAuthKeyException {
 		
 		return apiHelper.editUser(userId, authKey, username, firstName, lastName, emailAddress, password);
 	}
@@ -67,7 +78,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	public ResponseEntity<Map<String, Object>> deleteUser(@RequestParam(value = "userid") long userId,
-									   		  @RequestParam(value = "authkey") String authKey) {
+									   		  @RequestParam(value = "authkey") String authKey) throws ExpiredAuthKeyException, InvalidAuthKeyException {
 		
 		return apiHelper.deleteUser(userId, authKey);
 	}

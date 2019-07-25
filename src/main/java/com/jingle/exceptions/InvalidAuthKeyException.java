@@ -5,6 +5,6 @@ public class InvalidAuthKeyException extends Exception {
 	private static final long serialVersionUID = -6875269451301987197L;
 
 	public String getMessage() {
-		return "Error: Invalid auth key";
+		return "Invalid auth key";
 	}
 }

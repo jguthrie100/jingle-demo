@@ -10,12 +10,9 @@ import java.util.Map;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import org.springframework.stereotype.Service;
-
 import com.jingle.exceptions.*;
 import com.jingle.models.User;
 
-@Service
 public class AuthService {
 	
 	private Map<String, Long> authKeys = new HashMap<String, Long>();
@@ -24,10 +21,13 @@ public class AuthService {
 	// Default authentication key timeout of 20 mins
 	private final long DEFAULT_AUTH_TIMEOUT = 1200000;
 	
+	private final int MIN_PASSWORD_LENGTH = 8;
+	
 	/**
 	 * Gets a hash of the given password
 	 */
 	public byte[] getPasswordHash(String password) throws NoSuchAlgorithmException,	InvalidKeySpecException {
+		if(password == null || password.length() < MIN_PASSWORD_LENGTH) throw new IllegalArgumentException("Password must be a minimum of " + MIN_PASSWORD_LENGTH + " characters long");
 		
 		byte[] salt = new byte[20];
 		

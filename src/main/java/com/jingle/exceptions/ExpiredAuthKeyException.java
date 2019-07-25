@@ -5,6 +5,6 @@ public class ExpiredAuthKeyException extends Exception {
 	private static final long serialVersionUID = -7489733208406011453L;
 
 	public String getMessage() {
-		return "Error: Auth Key expired";
+		return "Expired auth key";
 	}
 }
