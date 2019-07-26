@@ -4,6 +4,9 @@
 Pull the git repo, and then in the root directory run `mvn package`, followed by `java -jar target/demo-0.0.1-SNAPSHOT.jar`
 
 # How to use
+
+Point a REST client to the base url: `https://localhost:8443` and use the following end points.
+
 ___POST /signup___ - requires 'username', 'firstname, 'lastname', 'email' and 'password' - returns new user.)
 
 ___POST /login___ - requires 'username' and 'password' - returns authentication key.
