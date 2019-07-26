@@ -1,7 +1,7 @@
 # jingle-demo
 
 # Install
-Pull the git repo, and then in the root directory run `mvn package`, followed by `java -jar target/demo-0.0.1-SNAPSHOT.jar`
+In the root directory run `mvn package`, followed by `java -jar target/demo-0.0.1-SNAPSHOT.jar`
 
 # How to use
 
