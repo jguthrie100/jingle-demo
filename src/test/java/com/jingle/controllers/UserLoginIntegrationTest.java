@@ -24,7 +24,7 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 @TestPropertySource(properties = "server.ssl.enabled=false")
 public class UserLoginIntegrationTest {
 	
-	private static Integer userId;
+	private Integer userId;
 	
 	@LocalServerPort
 	private int port;
@@ -44,13 +44,12 @@ public class UserLoginIntegrationTest {
 		RestAssured.useRelaxedHTTPSValidation();
 	}
 	
-	@BeforeClass
-	public static void prep() {
+	public void prepare(int i) {
 		userId = 	given().
-							param("username", "userLoginTest").and().
+							param("username", "userLoginTest" + i).and().
 							param("firstname", "Jingle").and().
 							param("lastname", "Bells").and().
-							param("email", "userLoginTest@bells.com").and().
+							param("email", "userLoginTest@bells.com" + i).and().
 							param("password", "jingle123").and().
 							header("Content-Type", "application/x-www-form-urlencoded").
 					when().
@@ -62,9 +61,10 @@ public class UserLoginIntegrationTest {
 
 	@Test
 	public void testSuccessfulLogin() {
+		prepare(1);
 		
 		given().
-				param("username", "userLoginTest").and().
+				param("username", "userLoginTest1").and().
 				param("password", "jingle123").and().
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
@@ -78,7 +78,7 @@ public class UserLoginIntegrationTest {
 	
 	@Test
 	public void testUnsuccessfulLogin_WrongUsername() {
-		
+
 		given().
 				param("username", "userLoginTestX").and().
 				param("password", "jingle123").and().
@@ -93,9 +93,10 @@ public class UserLoginIntegrationTest {
 	
 	@Test
 	public void testUnsuccessfulLogin_WrongPassword() {
+		prepare(3);
 		
 		given().
-				param("username", "userLoginTest").and().
+				param("username", "userLoginTest3").and().
 				param("password", "jingle1234").and().
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
@@ -122,9 +123,10 @@ public class UserLoginIntegrationTest {
 	
 	@Test
 	public void testUnsuccessfulLogin_MissingPassword() {
+		prepare(5);
 		
 		given().
-				param("username", "jingleTest").and().
+				param("username", "jingleTest5").and().
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				post("/login").
@@ -151,9 +153,11 @@ public class UserLoginIntegrationTest {
 	
 	@Test
 	public void testUnsuccessfulLogin_BlankPassword() {
+		prepare(7);
+		
 		// Blank password should just give generic incorrect password error
 		given().
-				param("username", "userTest").and().
+				param("username", "userLoginTest7").and().
 				param("password", "").and().
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().

@@ -10,9 +10,9 @@ import com.jingle.controllers.UserSignUpIntegrationTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	UserSignUpIntegrationTest.class,
-	UserLoginIntegrationTest.class,
-	UserEditIntegrationTest.class,
-	UserDeleteIntegrationTest.class
+//	UserSignUpIntegrationTest.class,
+//	UserLoginIntegrationTest.class,
+//	UserEditIntegrationTest.class,
+//	UserDeleteIntegrationTest.class
 })
 public class TestSuite {}

@@ -26,8 +26,8 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 @TestPropertySource(properties = "server.ssl.enabled=false")
 public class UserEditIntegrationTest {
 	
-	private static String authKey;
-	private static Integer userId;
+	private String authKey;
+	private Integer userId;
 	
 	@LocalServerPort
 	private int port;
@@ -47,13 +47,12 @@ public class UserEditIntegrationTest {
 		RestAssured.useRelaxedHTTPSValidation();
 	}
 	
-	@BeforeClass
-	public static void prepare() {
+	public void prepare(int i) {
 		userId =	given().
-							param("username", "userEditTest").and().
+							param("username", "userEditTest" + i).and().
 							param("firstname", "Jingle").and().
 							param("lastname", "Bells").and().
-							param("email", "userEditTest@bells.com").and().
+							param("email", "userEditTest@bells.com" + i).and().
 							param("password", "jingle123").and().
 							header("Content-Type", "application/x-www-form-urlencoded").
 					when().
@@ -64,17 +63,17 @@ public class UserEditIntegrationTest {
 					
 					// Prepare duplicate
 					given().
-						param("username", "userEditTest2").and().
+						param("username", "userEditTestDup" + i).and().
 						param("firstname", "Jingle").and().
 						param("lastname", "Bells").and().
-						param("email", "userEditTest2@bells.com").and().
+						param("email", "userEditTestDup@bells.com" + i).and().
 						param("password", "jingle123").and().
 						header("Content-Type", "application/x-www-form-urlencoded").
 					when().
 							post("/signup");
 		
 		authKey = 	given().
-						param("username", "userEditTest").and().
+						param("username", "userEditTest" + i).and().
 						param("password", "jingle123").and().
 						header("Content-Type", "application/x-www-form-urlencoded").
 					when().
@@ -86,10 +85,11 @@ public class UserEditIntegrationTest {
 
 	@Test
 	public void t1_testSuccessfulEdit_MissingEmail() {
+		prepare(1);
 		
 		given().
 				param("userid", userId).and().
-				param("username", "userEditTestNew").and().
+				param("username", "userEditTestNew1").and().
 				param("firstname", "editNew").and().
 				param("authkey", authKey).and().
 				header("Content-Type", "application/x-www-form-urlencoded").
@@ -99,20 +99,21 @@ public class UserEditIntegrationTest {
 		        statusCode(200).
 		        contentType(ContentType.JSON).
 		        body("id", equalTo(userId)).
-		        body("username", equalTo("userEditTestNew")).
+		        body("username", equalTo("userEditTestNew1")).
 		        body("firstName", equalTo("editNew")).
 		        body("lastName", equalTo("Bells")).
-		        body("emailAddress", equalTo("userEditTest@bells.com")).
+		        body("emailAddress", equalTo("userEditTest@bells.com1")).
 		        body("passHash", equalTo("OIiN4IgSDnWl5rCYEryyBw=="));
 	}
 	
 	@Test
 	public void t2_testSuccessfulEdit_SameEmail() {
+		prepare(2);
 		
 		given().
 				param("userid", userId).and().
 				param("username", "userEditTestNew").and().
-				param("email", "userEditTest@bells.com").and().
+				param("email", "userEditTest@bells.com2").and().
 				param("firstname", "editNew").and().
 				param("authkey", authKey).and().
 				header("Content-Type", "application/x-www-form-urlencoded").
@@ -125,16 +126,17 @@ public class UserEditIntegrationTest {
 		        body("username", equalTo("userEditTestNew")).
 		        body("firstName", equalTo("editNew")).
 		        body("lastName", equalTo("Bells")).
-		        body("emailAddress", equalTo("userEditTest@bells.com")).
+		        body("emailAddress", equalTo("userEditTest@bells.com2")).
 		        body("passHash", equalTo("OIiN4IgSDnWl5rCYEryyBw=="));
 	}
 	
 	@Test
-	public void t2_testSuccessfulEdit_NewEmail() {
+	public void t3_testSuccessfulEdit_NewEmail() {
+		prepare(3);
 		
 		given().
 				param("userid", userId).and().
-				param("email", "userEditTestNew@bells.com").and().
+				param("email", "userEditTestNew@bells.com3").and().
 				param("firstname", "editNew").and().
 				param("authkey", authKey).and().
 				header("Content-Type", "application/x-www-form-urlencoded").
@@ -144,19 +146,20 @@ public class UserEditIntegrationTest {
 		        statusCode(200).
 		        contentType(ContentType.JSON).
 		        body("id", equalTo(userId)).
-		        body("username", equalTo("userEditTestNew")).
+		        body("username", equalTo("userEditTest3")).
 		        body("firstName", equalTo("editNew")).
 		        body("lastName", equalTo("Bells")).
-		        body("emailAddress", equalTo("userEditTestNew@bells.com")).
+		        body("emailAddress", equalTo("userEditTestNew@bells.com3")).
 		        body("passHash", equalTo("OIiN4IgSDnWl5rCYEryyBw=="));
 	}
 	
 	@Test
 	public void t4_testUnsuccessfulEdit_DuplicateUsername() {
+		prepare(4);
 		
 		given().
 				param("userid", userId).
-				param("username", "userEditTest2").and().
+				param("username", "userEditTestDup4").and().
 				param("authkey", authKey).and().
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
@@ -169,10 +172,12 @@ public class UserEditIntegrationTest {
 	
 	@Test
 	public void t5_testUnsuccessfulEdit_DuplicateEmail() {
+		prepare(5);
+		prepare(500);
 		
 		given().
 				param("userid", userId).and().
-				param("email", "userEditTest2@bells.com").and().
+				param("email", "userEditTest@bells.com5").and().
 				param("authkey", authKey).and().
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
@@ -185,10 +190,11 @@ public class UserEditIntegrationTest {
 	
 	@Test
 	public void t6_testUnsuccessfulEdit_NonExistentUserId() {
+		prepare(6);
 		
 		given().
 				param("userid", 10000).and().
-				param("email", "userEditTestNew3@bells.com").and().
+				param("email", "userEditTestNew@bells.com6").and().
 				param("authkey", authKey + "_").and().
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
@@ -201,6 +207,8 @@ public class UserEditIntegrationTest {
 	
 	@Test
 	public void t7_testUnsuccessfulEdit_BlankUserId() {
+		prepare(7);
+		
 		// Blank userid
 		given().
 				param("userid", "").and().
@@ -216,6 +224,8 @@ public class UserEditIntegrationTest {
 	
 	@Test
 	public void t8_testUnsuccessfulEdit_MissingUserId() {
+		prepare(8);
+		
 		given().
 				param("authkey", authKey).and().
 				header("Content-Type", "application/x-www-form-urlencoded").
@@ -229,10 +239,11 @@ public class UserEditIntegrationTest {
 	
 	@Test
 	public void t9_testUnsuccessfulEdit_InvalidAuthKey() {
+		prepare(9);
 		
 		given().
 				param("userid", userId).and().
-				param("email", "userEditTestNew2@bells.com").and().
+				param("email", "userEditTestNew@bells.com9").and().
 				param("authkey", authKey + "_").and().
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
@@ -245,10 +256,11 @@ public class UserEditIntegrationTest {
 	
 	@Test
 	public void t10_testUnsuccessfulEdit_BlankAuthKey() {
+		prepare(10);
 		
 		given().
 				param("userid", userId).and().
-				param("email", "userEditTestNew2@bells.com").and().
+				param("email", "userEditTestNew@bells.com10").and().
 				param("authkey", "").and().
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
@@ -260,11 +272,12 @@ public class UserEditIntegrationTest {
 	}
 	
 	@Test
-	public void t10_testUnsuccessfulEdit_MissingAuthKey() {
+	public void t11_testUnsuccessfulEdit_MissingAuthKey() {
+		prepare(11);
 		
 		given().
 				param("userid", userId).and().
-				param("email", "userEditTestNew2@bells.com").and().
+				param("email", "userEditTestNew@bells.com11").and().
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				put("/edit").

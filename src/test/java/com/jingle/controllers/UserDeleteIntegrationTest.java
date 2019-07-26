@@ -26,8 +26,8 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 @TestPropertySource(properties = "server.ssl.enabled=false")
 public class UserDeleteIntegrationTest {
 	
-	private static String authKey;
-	private static Integer userId;
+	private String authKey;
+	private Integer userId;
 	
 	@LocalServerPort
 	private int port;
@@ -47,13 +47,12 @@ public class UserDeleteIntegrationTest {
 		RestAssured.useRelaxedHTTPSValidation();
 	}
 	
-	@BeforeClass
-	public static void prepare() {
+	public void prepare(int i) {
 		userId =	given().
-							param("username", "userDeleteTest").and().
+							param("username", "userDeleteTest" + i).and().
 							param("firstname", "Jingle").and().
 							param("lastname", "Bells").and().
-							param("email", "userDeleteTest@jingle.com").and().
+							param("email", "userDeleteTest@jingle.com" + i).and().
 							param("password", "jingle123").and().
 							header("Content-Type", "application/x-www-form-urlencoded").
 					when().
@@ -63,7 +62,7 @@ public class UserDeleteIntegrationTest {
 							jsonPath().getInt("id");
 		
 		authKey = 	given().
-						param("username", "userDeleteTest").and().
+						param("username", "userDeleteTest" + i).and().
 						param("password", "jingle123").and().
 						header("Content-Type", "application/x-www-form-urlencoded").
 					when().
@@ -71,10 +70,13 @@ public class UserDeleteIntegrationTest {
 					then().
 						extract().
 						jsonPath().getString("authKey");
+		
+		i++;
 	}
 
 	@Test
 	public void t1_testUnSuccessfulDelete_MissingUserId() {
+		prepare(1);
 		
 		given().
 				param("authkey", authKey).and().
@@ -89,6 +91,7 @@ public class UserDeleteIntegrationTest {
 	
 	@Test
 	public void t2_testUnSuccessfulDelete_BlankUserId() {
+		prepare(2);
 		
 		given().
 				param("userid", "").and().
@@ -104,6 +107,7 @@ public class UserDeleteIntegrationTest {
 	
 	@Test
 	public void t3_testUnSuccessfulDelete_InvalidUserId() {
+		prepare(3);
 		
 		given().
 				param("userid", 100000).and().
@@ -119,6 +123,7 @@ public class UserDeleteIntegrationTest {
 	
 	@Test
 	public void t4_testUnSuccessfulDelete_MissingAuthKey() {
+		prepare(4);
 		
 		given().
 				param("userid", userId).and().
@@ -133,6 +138,8 @@ public class UserDeleteIntegrationTest {
 	
 	@Test
 	public void t5_testUnSuccessfulDelete_BlankAuthKey() {
+		prepare(5);
+		
 		// give generic invalid auth key message (for security purposes)
 		given().
 				param("userid", userId).and().
@@ -148,6 +155,7 @@ public class UserDeleteIntegrationTest {
 	
 	@Test
 	public void t6_testSuccessfulDelete() {
+		prepare(6);
 		
 		given().
 				param("userid", userId).and().
@@ -164,6 +172,14 @@ public class UserDeleteIntegrationTest {
 	
 	@Test
 	public void t7_testUnSuccessfulDelete_SameId() {
+		prepare(7);
+		
+		given().
+				param("userid", userId).and().
+				param("authkey", authKey).and().
+				header("Content-Type", "application/x-www-form-urlencoded").
+		when().
+				delete("/delete");
 		
 		given().
 				param("userid", userId).and().
