@@ -1,5 +1,8 @@
 # jingle-demo
 
+# Install
+Pull the git repo, and then in the root directory run `mvn package`, followed by `java -jar target/demo-0.0.1-SNAPSHOT.jar`
+
 # How to use
 ___POST /signup___ - requires 'username', 'firstname, 'lastname', 'email' and 'password' - returns new user.)
 
@@ -52,6 +55,4 @@ For example:
 
 # TODO
 
-* Fix error messages when trying to save duplicate UNIQUE values in repository 
 * Convert to using modules
-* Finish tests
