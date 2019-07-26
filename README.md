@@ -1,6 +1,12 @@
 # jingle-demo
 
+# Install
+In the root directory run `mvn package`, followed by `java -jar target/demo-0.0.1-SNAPSHOT.jar`
+
 # How to use
+
+Point a REST client to the base url: `https://localhost:8443` and use the following end points.
+
 ___POST /signup___ - requires 'username', 'firstname, 'lastname', 'email' and 'password' - returns new user.)
 
 ___POST /login___ - requires 'username' and 'password' - returns authentication key.
@@ -52,6 +58,5 @@ For example:
 
 # TODO
 
-* Fix error messages when trying to save duplicate UNIQUE values in repository 
 * Convert to using modules
-* Finish tests
+* I've converted the functionality to modules ( www.github.com/jguthrie100/jingle-mod ), but can't get it to run quite properly.
