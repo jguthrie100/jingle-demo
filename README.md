@@ -59,4 +59,4 @@ For example:
 # TODO
 
 * Convert to using modules
-I've converted the functionality to modules ( www.github.com/jguthrie/jingle-mod ), but can't get it to run quite properly.
+* I've converted the functionality to modules ( www.github.com/jguthrie/jingle-mod ), but can't get it to run quite properly.
