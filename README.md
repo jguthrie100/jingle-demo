@@ -58,5 +58,4 @@ For example:
 
 # TODO
 
-* Convert to using modules
-* I've converted the functionality to modules ( www.github.com/jguthrie100/jingle-mod ), but can't get it to run quite properly.
+* Converted functionality to modules ( www.github.com/jguthrie100/jingle-mod ), however only runs from within Eclipse
