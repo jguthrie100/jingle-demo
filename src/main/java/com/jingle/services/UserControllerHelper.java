@@ -14,6 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -179,7 +180,8 @@ public class UserControllerHelper {
 			errorCode = HttpStatus.CONFLICT;
 		
 		} else if(ex.getClass().equals(IllegalArgumentException.class) ||
-				  ex.getClass().equals(MissingServletRequestParameterException.class)) {
+				  ex.getClass().equals(MissingServletRequestParameterException.class) ||
+				  ex.getClass().equals(MissingRequestHeaderException.class)) {
 			errorCode = HttpStatus.BAD_REQUEST;
 		
 		} else if(ex.getClass().equals(MethodArgumentTypeMismatchException.class)) {

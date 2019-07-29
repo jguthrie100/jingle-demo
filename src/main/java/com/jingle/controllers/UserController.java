@@ -62,8 +62,8 @@ public class UserController {
 	 * All params are optional except for the userid and authkey params 
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
-	public ResponseEntity<User> editUser(@RequestParam(value = "userid") long userId,
-										 @RequestParam(value = "authkey") String authKey,
+	public ResponseEntity<User> editUser(@RequestHeader(value = "Auth-Key") String authKey,
+										 @RequestParam(value = "userid") long userId,
 										 @RequestParam(value = "username", required = false) String username,
 										 @RequestParam(value = "firstname", required = false) String firstName,
 										 @RequestParam(value = "lastname", required = false) String lastName,
@@ -77,8 +77,8 @@ public class UserController {
 	 * Delete a specific User object from the database
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public ResponseEntity<Map<String, Object>> deleteUser(@RequestParam(value = "userid") long userId,
-									   		  @RequestParam(value = "authkey") String authKey) throws ExpiredAuthKeyException, InvalidAuthKeyException {
+	public ResponseEntity<Map<String, Object>> deleteUser(@RequestHeader(value = "Auth-Key") String authKey,
+														  @RequestParam(value = "userid") long userId) throws ExpiredAuthKeyException, InvalidAuthKeyException {
 		
 		return apiHelper.deleteUser(userId, authKey);
 	}

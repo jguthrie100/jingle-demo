@@ -79,7 +79,7 @@ public class UserDeleteIntegrationTest {
 		prepare(1);
 		
 		given().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				delete("/delete").
@@ -95,7 +95,7 @@ public class UserDeleteIntegrationTest {
 		
 		given().
 				param("userid", "").and().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				delete("/delete").
@@ -111,7 +111,7 @@ public class UserDeleteIntegrationTest {
 		
 		given().
 				param("userid", 100000).and().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				delete("/delete").
@@ -133,7 +133,7 @@ public class UserDeleteIntegrationTest {
 		then().
 		        statusCode(400).
 		        contentType(ContentType.JSON).
-		        body("error", equalTo("Required String parameter 'authkey' is not present"));
+		        body("error", equalTo("Missing request header 'Auth-Key' for method parameter of type String"));
 	}
 	
 	@Test
@@ -143,7 +143,7 @@ public class UserDeleteIntegrationTest {
 		// give generic invalid auth key message (for security purposes)
 		given().
 				param("userid", userId).and().
-				param("authkey", "").and().
+				header("Auth-Key", "").
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				delete("/delete").
@@ -159,7 +159,7 @@ public class UserDeleteIntegrationTest {
 		
 		given().
 				param("userid", userId).and().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				delete("/delete").
@@ -176,14 +176,14 @@ public class UserDeleteIntegrationTest {
 		
 		given().
 				param("userid", userId).and().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				delete("/delete");
 		
 		given().
 				param("userid", userId).and().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				delete("/delete").

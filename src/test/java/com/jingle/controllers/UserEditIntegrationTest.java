@@ -91,7 +91,7 @@ public class UserEditIntegrationTest {
 				param("userid", userId).and().
 				param("username", "userEditTestNew1").and().
 				param("firstname", "editNew").and().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				put("/edit").
@@ -115,7 +115,7 @@ public class UserEditIntegrationTest {
 				param("username", "userEditTestNew").and().
 				param("email", "userEditTest@bells.com2").and().
 				param("firstname", "editNew").and().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				put("/edit").
@@ -138,7 +138,7 @@ public class UserEditIntegrationTest {
 				param("userid", userId).and().
 				param("email", "userEditTestNew@bells.com3").and().
 				param("firstname", "editNew").and().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				put("/edit").
@@ -160,7 +160,7 @@ public class UserEditIntegrationTest {
 		given().
 				param("userid", userId).
 				param("username", "userEditTestDup4").and().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				put("/edit").
@@ -178,7 +178,7 @@ public class UserEditIntegrationTest {
 		given().
 				param("userid", userId).and().
 				param("email", "userEditTest@bells.com5").and().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				put("/edit").
@@ -195,7 +195,7 @@ public class UserEditIntegrationTest {
 		given().
 				param("userid", 10000).and().
 				param("email", "userEditTestNew@bells.com6").and().
-				param("authkey", authKey + "_").and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				put("/edit").
@@ -212,7 +212,7 @@ public class UserEditIntegrationTest {
 		// Blank userid
 		given().
 				param("userid", "").and().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				put("/edit").
@@ -227,7 +227,7 @@ public class UserEditIntegrationTest {
 		prepare(8);
 		
 		given().
-				param("authkey", authKey).and().
+				header("Auth-Key", authKey).
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				put("/edit").
@@ -244,7 +244,7 @@ public class UserEditIntegrationTest {
 		given().
 				param("userid", userId).and().
 				param("email", "userEditTestNew@bells.com9").and().
-				param("authkey", authKey + "_").and().
+				header("Auth-Key", authKey + "_").
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				put("/edit").
@@ -261,7 +261,7 @@ public class UserEditIntegrationTest {
 		given().
 				param("userid", userId).and().
 				param("email", "userEditTestNew@bells.com10").and().
-				param("authkey", "").and().
+				header("Auth-Key", "").
 				header("Content-Type", "application/x-www-form-urlencoded").
 		when().
 				put("/edit").
@@ -284,7 +284,7 @@ public class UserEditIntegrationTest {
 		then().
 		        statusCode(400).
 		        contentType(ContentType.JSON).
-		        body("error", equalTo("Required String parameter 'authkey' is not present"));
+		        body("error", equalTo("Missing request header 'Auth-Key' for method parameter of type String"));
 	}
 }
 
